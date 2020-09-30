@@ -9,7 +9,6 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 
 class CircularProgressView(
     context: Context?,
@@ -19,6 +18,7 @@ class CircularProgressView(
     companion object {
         const val ARC_FULL_ROTATION_DEGREE = 360
         const val PERCENTAGE_DIVIDER = 100.0
+        const val PERCENTAGE_VALUE_HOLDER = "percentage"
     }
 
     private var currentPercentage = 0
@@ -28,7 +28,7 @@ class CircularProgressView(
 
     private val parentArcColor =
         context?.resources?.getColor(R.color.gray_light, null) ?: Color.GRAY
-    private val fillArcColor = context?.resources?.getColor(R.color.neon_green, null) ?: Color.GREEN
+    private val fillArcColor = context?.resources?.getColor(R.color.blue, null) ?: Color.GREEN
 
     private val parentArcPaint = Paint().apply {
         style = Paint.Style.STROKE
@@ -81,10 +81,9 @@ class CircularProgressView(
         val valuesHolder = PropertyValuesHolder.ofFloat("percentage", 0f, 100f)
         val animator = ValueAnimator().apply {
             setValues(valuesHolder)
-            duration = 2000
-            interpolator = AccelerateDecelerateInterpolator()
+            duration = 1000
             addUpdateListener {
-                val percentage = it.getAnimatedValue("percentage") as Float
+                val percentage = it.getAnimatedValue(PERCENTAGE_VALUE_HOLDER) as Float
                 currentPercentage = percentage.toInt()
                 invalidate()
             }
